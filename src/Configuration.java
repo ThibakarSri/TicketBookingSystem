@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Config {
+public class Configuration {
     private int totalTickets;
     private int ticketReleaseRate;
     private int customerRetrievalRate;
@@ -47,16 +47,16 @@ public class Config {
     }
 
     // Save a list of configurations to JSON
-    public static void saveConfig(List<Config>configList,String filename, Gson gson) throws IOException {
+    public static void saveConfig(List<Configuration>configList, String filename, Gson gson) throws IOException {
         try (FileWriter writer = new FileWriter(filename)) {
             gson.toJson(configList, writer);
         }
     }
 
     // Load a list of configurations from JSON
-    public static List<Config> loadConfig(String filename, Gson gson) throws IOException {
+    public static List<Configuration> loadConfig(String filename, Gson gson) throws IOException {
         try (FileReader reader = new FileReader(filename)) {
-            Type listType = new TypeToken<ArrayList<Config>>() {}.getType();
+            Type listType = new TypeToken<ArrayList<Configuration>>() {}.getType();
             return gson.fromJson(reader, listType);
         }
     }

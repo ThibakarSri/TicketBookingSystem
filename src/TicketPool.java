@@ -14,13 +14,12 @@ public class TicketPool {
         while (ticketQueue.size() >= maximumTicketCapacity) {
             try {
                 wait();
-                System.out.println("Vendors waiting to add tickets...");
+                System.out.println("The ticket pool is full so vendors waiting to add tickets...");
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new RuntimeException("Thread interrupted: " + e.getMessage());
             }
         }
-
         ticketQueue.add(ticket);
         notifyAll();
         System.out.println("Ticket added by - " + Thread.currentThread().getName() + " - current size is - " + ticketQueue.size());
@@ -30,7 +29,7 @@ public class TicketPool {
         while (ticketQueue.isEmpty()) {
             try {
                 wait();
-                System.out.println("Customers waiting to buy tickets...");
+                System.out.println(" The TicketPool is empty so customers waiting to buy tickets...");
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new RuntimeException("Thread interrupted: " + e.getMessage());
