@@ -9,17 +9,32 @@ public class Customer implements Runnable {
         this.quantity = quantity;
     }
 
+//    @Override
+//    public void run() {
+//        for (int i = 0; i < quantity; i++) {
+//            Ticket ticket = ticketPool.buyTicket();
+//            System.out.println("Ticket purchased by - " + Thread.currentThread().getName() + ": " + ticket);
+//            try {
+//                Thread.sleep(customerRetrievalRate * 1000L);
+//            } catch (InterruptedException e) {
+//                Thread.currentThread().interrupt();
+//                throw new RuntimeException("Thread interrupted: " + e.getMessage());
+//            }
+//        }
+//    }
+
     @Override
     public void run() {
-        for (int i = 0; i < quantity; i++) {
+        for (int i = 0; i < quantity && Main.isRunning(); i++) {
             Ticket ticket = ticketPool.buyTicket();
             System.out.println("Ticket purchased by - " + Thread.currentThread().getName() + ": " + ticket);
             try {
                 Thread.sleep(customerRetrievalRate * 1000L);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                throw new RuntimeException("Thread interrupted: " + e.getMessage());
+                System.out.println("Customer interrupted.");
             }
         }
     }
+
 }

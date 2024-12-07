@@ -13,6 +13,10 @@ public class Configuration {
     private int ticketReleaseRate;
     private int customerRetrievalRate;
     private int maxTicketCapacity;
+    private int numVendors;
+    private int numCustomers;
+    private int maxTicketsPerCustomer;
+
 
     public int getTotalTickets() {
         return totalTickets;
@@ -46,6 +50,32 @@ public class Configuration {
         this.maxTicketCapacity = maxTicketCapacity;
     }
 
+    public int getNumVendors() {
+        return numVendors;
+    }
+
+    public void setNumVendors(int numVendors) {
+        this.numVendors = numVendors;
+    }
+
+    public int getNumCustomers() {
+        return numCustomers;
+    }
+
+    public void setNumCustomers(int numCustomers) {
+        this.numCustomers = numCustomers;
+    }
+
+    public int getMaxTicketsPerCustomer() {
+        return maxTicketsPerCustomer;
+    }
+
+    public void setMaxTicketsPerCustomer(int maxTicketsPerCustomer) {
+        this.maxTicketsPerCustomer = maxTicketsPerCustomer;
+    }
+
+
+
     // Save a list of configurations to JSON
     public static void saveConfig(List<Configuration>configList, String filename, Gson gson) throws IOException {
         try (FileWriter writer = new FileWriter(filename)) {
@@ -56,7 +86,7 @@ public class Configuration {
     // Load a list of configurations from JSON
     public static List<Configuration> loadConfig(String filename, Gson gson) throws IOException {
         try (FileReader reader = new FileReader(filename)) {
-            Type listType = new TypeToken<ArrayList<Configuration>>() {}.getType();
+            Type listType = new TypeToken<List<Configuration>>() {}.getType();
             return gson.fromJson(reader, listType);
         }
     }
@@ -68,6 +98,9 @@ public class Configuration {
                 ", ticketReleaseRate=" + ticketReleaseRate +
                 ", customerRetrievalRate=" + customerRetrievalRate +
                 ", maxTicketCapacity=" + maxTicketCapacity +
+                ", numVendors=" + numVendors +
+                ", numCustomers=" + numCustomers +
+                ", maxTicketsPerCustomer=" + maxTicketsPerCustomer +
                 '}';
     }
 }
