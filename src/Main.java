@@ -68,7 +68,7 @@ public class Main {
         // Create and start vendor threads
         for (int i = 1; i <= numVendors; i++) {
             Thread vendorThread = new Thread(new Vendor(
-                    newConfig.getTotalTickets(), // Divide total tickets among vendors
+                    newConfig.getTotalTickets()/ numVendors, // Divide total tickets among vendors
                     newConfig.getTicketReleaseRate(),
                     ticketPool), "Vendor-" + i);
             threads.add(vendorThread);
