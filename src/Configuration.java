@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Configuration {
@@ -15,7 +14,7 @@ public class Configuration {
     private int maxTicketCapacity;
     private int numVendors;
     private int numCustomers;
-    private int maxTicketsPerCustomer;
+    private int ticketsPerCustomer;
 
 
     public int getTotalTickets() {
@@ -66,22 +65,28 @@ public class Configuration {
         this.numCustomers = numCustomers;
     }
 
-    public int getMaxTicketsPerCustomer() {
-        return maxTicketsPerCustomer;
+    public int getTicketsPerCustomer() {
+        return ticketsPerCustomer;
     }
 
-    public void setMaxTicketsPerCustomer(int maxTicketsPerCustomer) {
-        this.maxTicketsPerCustomer = maxTicketsPerCustomer;
+    public void setTicketsPerCustomer(int ticketsPerCustomer) {
+        this.ticketsPerCustomer = ticketsPerCustomer;
     }
 
 
 
     // Save a list of configurations to JSON
-    public static void saveConfig(List<Configuration>configList, String filename, Gson gson) throws IOException {
+    public static void saveConfig(List<Configuration>configList, String filename, Gson gson) throws IOException
+    {
         try (FileWriter writer = new FileWriter(filename)) {
             gson.toJson(configList, writer);
         }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
+
+
 
     // Load a list of configurations from JSON
     public static List<Configuration> loadConfig(String filename, Gson gson) throws IOException {
@@ -100,7 +105,7 @@ public class Configuration {
                 ", maxTicketCapacity=" + maxTicketCapacity +
                 ", numVendors=" + numVendors +
                 ", numCustomers=" + numCustomers +
-                ", maxTicketsPerCustomer=" + maxTicketsPerCustomer +
+                ", ticketsPerCustomer=" + ticketsPerCustomer +
                 '}';
     }
 }

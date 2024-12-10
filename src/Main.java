@@ -7,11 +7,14 @@ import java.util.Scanner;
 
 public class Main {
     private static volatile boolean isRunning = true; // Flag to control thread execution
-    private static Scanner scanner = new Scanner(System.in);
-    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final String FILENAME = "configs.json";
 
     public static void main(String[] args) {
+        System.out.println("||-----------------------------------------------------------------||");
+        System.out.println("|----------------------Ticket Booking System------------------------|");
+        System.out.println("||-----------------------------------------------------------------||");
         // Load or Create Configuration
         Configuration configuration = loadOrCreateConfiguration();
 
@@ -33,7 +36,7 @@ public class Main {
         Configuration configuration = new Configuration();
 
         // Prompt to load existing configurations
-        System.out.println("Load existing configurations? (yes/no):");
+        System.out.println("Load existing configurations? (Yes/No):");
         String loadConfig = scanner.nextLine().trim().toLowerCase();
 
         if (loadConfig.equals("yes")) {
@@ -49,7 +52,7 @@ public class Main {
                 System.out.println("Loaded configuration:\n" + configuration);
                 return configuration; // Return the loaded configuration
             } catch (Exception e) {
-                System.out.println("Failed to load configurations. Starting fresh.");
+                System.out.println("JSON file is empty or Failed to load configurations.\n Starting fresh.");
             }
         }
 
@@ -61,15 +64,16 @@ public class Main {
         configuration.setMaxTicketCapacity(promptInt("Enter maximum ticket capacity:", 1, 1000));
         configuration.setNumVendors(promptInt("Enter the number of vendors:", 1, 10));
         configuration.setNumCustomers(promptInt("Enter the number of customers:", 1, 10));
-        configuration.setMaxTicketsPerCustomer(promptInt("Enter the maximum number of tickets each customer can buy:", 1, configuration.getTotalTickets()));
+        configuration.setTicketsPerCustomer(promptInt("Enter the number of tickets each customer can buy:", 1, configuration.getTotalTickets()));
 
         // Ask if the user wants to save the configuration
-        System.out.println("Do you want to save the configuration? (yes/no):");
+        System.out.println("Do you want to save the configuration? (Yes/No)");
         String saveConfig = scanner.nextLine().trim().toLowerCase();
         if (saveConfig.equals("yes")) {
             try {
                 configurations = Configuration.loadConfig(FILENAME, gson);
             } catch (Exception ignored) {
+                System.out.println("Failed to load configurations. Starting fresh.");
                 // If the file doesn't exist, start with an empty list
             }
             configurations.add(configuration);
@@ -97,7 +101,7 @@ public class Main {
             Thread customerThread = new Thread(new Customer(
                     ticketPool,
                     configuration.getCustomerRetrievalRate(),
-                    configuration.getMaxTicketsPerCustomer()), // Maximum tickets per customer
+                    configuration.getTicketsPerCustomer()), // Maximum tickets per customer
                     "Customer-" + i);
             threads.add(customerThread);
         }
@@ -233,7 +237,7 @@ public class Main {
 //        int numCustomers = promptInt(scanner, "Enter the number of customers:", 1, 10);
 //
 //        // Get the maximum tickets each customer can buy
-//        int maxTicketsPerCustomer = promptInt(scanner, "Enter the maximum number of tickets each customer can buy:", 1, newConfig.getTotalTickets());
+//        int ticketsPerCustomer = promptInt(scanner, "Enter the maximum number of tickets each customer can buy:", 1, newConfig.getTotalTickets());
 //
 //        // Initialize TicketPool
 //        TicketPool ticketPool = new TicketPool(newConfig.getMaxTicketCapacity());
@@ -253,7 +257,7 @@ public class Main {
 //            Thread customerThread = new Thread(new Customer(
 //                    ticketPool,
 //                    newConfig.getCustomerRetrievalRate(),
-//                    maxTicketsPerCustomer), "Customer-" + i);
+//                    ticketsPerCustomer), "Customer-" + i);
 //            threads.add(customerThread);
 //        }
 //
